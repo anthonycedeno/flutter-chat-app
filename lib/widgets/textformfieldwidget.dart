@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFormFieldWidget extends StatelessWidget {
   final String hintText;
   final TextInputType textType;
-  final obscureText;
+  final bool obscureText;
+  final TextEditingController controller;
+  final Function validator;
 
-  TextFieldWidget({
+  TextFormFieldWidget({
     @required this.hintText,
     this.textType,
     this.obscureText = false,
+    this.controller,
+    @required this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
+      controller: controller,
       obscureText: obscureText,
       keyboardType: textType,
       style: TextStyle(

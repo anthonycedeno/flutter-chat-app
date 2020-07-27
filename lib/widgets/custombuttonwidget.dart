@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final Function function;
   final String text;
   final MaterialColor color;
   final double borderRadius;
@@ -9,7 +8,6 @@ class CustomButton extends StatelessWidget {
   final double paddingHorizontal;
 
   CustomButton({
-    @required this.function,
     @required this.text,
     this.color = Colors.lightBlue,
     this.borderRadius = 6.0,
@@ -19,22 +17,19 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: function,
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: paddingHorizontal,
-          vertical: paddingVertical,
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: TextStyle(color: Colors.white, fontSize: 17),
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: paddingHorizontal,
+        vertical: paddingVertical,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white, fontSize: 17),
       ),
     );
   }

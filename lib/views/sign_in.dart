@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/textfieldwidget.dart';
+import '../widgets/textformfieldwidget.dart';
 import '../widgets/custombuttonwidget.dart';
 
 class SignIn extends StatefulWidget {
@@ -11,8 +11,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,13 +26,25 @@ class _SignInState extends State<SignIn> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFieldWidget(
+            TextFormFieldWidget(
               hintText: 'email',
               textType: TextInputType.emailAddress,
+              validator: (val) {
+                return RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(val)
+                    ? null
+                    : "Provide valid email";
+              },
             ),
-            TextFieldWidget(
+            TextFormFieldWidget(
               hintText: 'password',
               obscureText: true,
+              validator: (val) {
+                return val.length < 8
+                    ? "Password must be at least 8 characters"
+                    : null;
+              },
             ),
             SizedBox(
               height: 16.0,
@@ -51,9 +63,11 @@ class _SignInState extends State<SignIn> {
             SizedBox(
               height: 16.0,
             ),
-            CustomButton(
-              function: () {},
-              text: 'Sign In',
+            GestureDetector(
+              onTap: () {},
+              child: CustomButton(
+                text: 'Sign In',
+              ),
             ),
             SizedBox(
               height: 16.0,

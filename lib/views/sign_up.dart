@@ -1,72 +1,123 @@
 import 'package:flutter/material.dart';
 
+import '../services/auth.dart';
 import '../widgets/custombuttonwidget.dart';
-import '../widgets/textfieldwidget.dart';
+import '../widgets/textformfieldwidget.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  bool isLoading = false;
+  Auth auth = new Auth();
+  final formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+
+  signMeUp() {
+    if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      auth
+          .signUpWithEmailAndPassword(
+              emailController.text, passwordController.text)
+          .then((value) {
+        print("$value");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('ChatApp'),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 24.0,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFieldWidget(
-              hintText: 'email',
-              textType: TextInputType.emailAddress,
-            ),
-            TextFieldWidget(
-              hintText: 'password',
-              obscureText: true,
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Container(
-              alignment: Alignment.centerRight,
+      body: isLoading
+          ? Center(child: Container(child: CircularProgressIndicator()))
+          : Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
+                horizontal: 24.0,
               ),
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        TextFormFieldWidget(
+                          hintText: 'username',
+                          textType: TextInputType.text,
+                          controller: usernameController,
+                          validator: (value) {
+                            return value.isEmpty || value.length < 8
+                                ? 'Field must be at least 8 characters'
+                                : null;
+                          },
+                        ),
+                        TextFormFieldWidget(
+                          hintText: 'email',
+                          textType: TextInputType.emailAddress,
+                          controller: emailController,
+                          validator: (val) {
+                            return RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(val)
+                                ? null
+                                : "Provide valid email";
+                          },
+                        ),
+                        TextFormFieldWidget(
+                          hintText: 'password',
+                          obscureText: true,
+                          controller: passwordController,
+                          validator: (val) {
+                            return val.length < 8
+                                ? "Password must be at least 8 characters"
+                                : null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      signMeUp();
+                    },
+                    child: CustomButton(
+                      text: 'Sign Up',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: Text(
+                      'Already have an account? Sign in now',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: 16.0,
-            ),
-            CustomButton(
-              function: () {},
-              text: 'Sign In',
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Text(
-                'Don\'t have account? Register Now',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
