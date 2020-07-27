@@ -4,6 +4,8 @@ import '../widgets/textformfieldwidget.dart';
 import '../widgets/custombuttonwidget.dart';
 
 class SignIn extends StatefulWidget {
+  final Function toggle;
+  SignIn(this.toggle);
   @override
   _SignInState createState() => _SignInState();
 }
@@ -72,15 +74,20 @@ class _SignInState extends State<SignIn> {
             SizedBox(
               height: 16.0,
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Text(
-                'Don\'t have account? Register Now',
-                style: TextStyle(color: Colors.white),
+            GestureDetector(
+              onTap: () {
+                widget.toggle();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  'Don\'t have account? Register Now',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],

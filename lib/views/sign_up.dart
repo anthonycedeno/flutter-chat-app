@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../views/chat_rooms.dart';
 import '../services/auth.dart';
 import '../widgets/custombuttonwidget.dart';
 import '../widgets/textformfieldwidget.dart';
 
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -27,7 +30,10 @@ class _SignUpState extends State<SignUp> {
           .signUpWithEmailAndPassword(
               emailController.text, passwordController.text)
           .then((value) {
-        print("$value");
+        //print("${value.userId}");
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ChatRoom()));
       });
     }
   }
@@ -104,15 +110,20 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: 16.0,
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
-                    child: Text(
-                      'Already have an account? Sign in now',
-                      style: TextStyle(color: Colors.white),
+                  GestureDetector(
+                    onTap: () {
+                      widget.toggle();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: Text(
+                        'Already have an account? Sign in now',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
