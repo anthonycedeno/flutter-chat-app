@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/views/search.dart';
 import '../helper/authenticate.dart';
 
 import '../services/auth.dart';
@@ -34,6 +35,17 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Search(),
+            ),
+          );
+        },
       ),
     );
   }
