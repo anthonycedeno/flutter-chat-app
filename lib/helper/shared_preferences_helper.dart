@@ -29,4 +29,26 @@ class SharedPreferencesHelper {
       email,
     );
   }
+
+  //Getting data from Shared Preferences
+  static Future<bool> getUserLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.getBool(
+      sharedPreferencesUserLoggedInKey,
+    );
+  }
+
+  static Future<String> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.getString(
+      sharedPreferencesUsernameKey,
+    );
+  }
+
+  static Future<String> getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.getString(
+      sharedPreferencesUserEmailKey,
+    );
+  }
 }
