@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/helper/constants.dart';
 
 import '../services/database.dart';
 import '../widgets/searchtilewidget.dart';
+import './chat_screen.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -20,11 +22,6 @@ class _SearchState extends State<Search> {
         searchSnapShot = val;
       });
     });
-  }
-
-  createChatRoomAndStartConversation(String username) {
-    List<String> users = [username, ];
-    db.createChatRoom(chatRoomId, chatroomMap)
   }
 
   Widget searchList() {

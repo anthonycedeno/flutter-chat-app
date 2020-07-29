@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../helper/constants.dart';
+import '../views/chat_screen.dart';
+import '../services/database.dart';
 
 class SearchTile extends StatelessWidget {
   final String username;
@@ -7,6 +12,29 @@ class SearchTile extends StatelessWidget {
     this.username,
     this.email,
   });
+
+  createChatRoomAndStartConversation({BuildContext context, String username}) {
+    if (username != Constants.myName) {
+      String chatRoomId = getChatRoomId(username, Constants.myName);
+      Database db = new Database();
+
+      List<String> users = [username, Constants.myName];
+      Map<String, dynamic> chatRoomMap = {
+        "users": users,
+        "chatRoomId": chatRoomId
+      };
+      db.createChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatScreen(),
+        ),
+      );
+    } else {
+      print("You can't send a message to yourself");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +63,10 @@ class SearchTile extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              createChatRoomAndStartConversation(
+                  context: context, username: username);
+            },
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(6.0)),
@@ -51,5 +82,14 @@ class SearchTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+//Checks who is sending the message comparing the IDs of the chat rooms
+getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
   }
 }

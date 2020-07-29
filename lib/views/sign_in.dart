@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../services/database.dart';
 import '../services/auth.dart';
 import '../views/chat_rooms.dart';
 import '../widgets/textformfieldwidget.dart';
 import '../widgets/custombuttonwidget.dart';
+import '../helper/shared_preferences_helper.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -15,14 +18,24 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool isLoading = false;
   Auth auth = new Auth();
+  Database db = new Database();
   final formKey = GlobalKey<FormState>();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  QuerySnapshot snapshotUserInfo;
 
   signMeIn() {
     if (formKey.currentState.validate()) {
+      SharedPreferencesHelper.saveEmail(emailController.text);
+
       setState(() {
         isLoading = true;
+      });
+
+      db.getUserByEmail(emailController.text).then((value) {
+        snapshotUserInfo = value;
+        SharedPreferencesHelper.saveEmail(
+            snapshotUserInfo.documents[0].data["username"]);
       });
 
       auth
@@ -30,9 +43,11 @@ class _SignInState extends State<SignIn> {
               emailController.text, passwordController.text)
           .then((value) {
         //print("${value.userId}");
-
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        if (value != null) {
+          SharedPreferencesHelper.saveLoggedIn(true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
       });
     }
   }

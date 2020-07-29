@@ -5,6 +5,7 @@ import '../services/auth.dart';
 import '../services/database.dart';
 import '../widgets/custombuttonwidget.dart';
 import '../widgets/textformfieldwidget.dart';
+import '../helper/shared_preferences_helper.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggle;
@@ -29,6 +30,9 @@ class _SignUpState extends State<SignUp> {
         "email": emailController.text
       };
 
+      SharedPreferencesHelper.saveUsername(usernameController.text);
+      SharedPreferencesHelper.saveEmail(emailController.text);
+
       setState(() {
         isLoading = true;
       });
@@ -39,6 +43,7 @@ class _SignUpState extends State<SignUp> {
           .then((value) {
         //print("${value.userId}");
         db.uploadUserInfo(userInfo);
+        SharedPreferencesHelper.saveLoggedIn(true);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ChatRoom()));
       });
