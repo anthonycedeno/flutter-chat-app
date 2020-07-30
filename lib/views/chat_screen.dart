@@ -26,7 +26,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   return MessageTile(
-                      snapshot.data.documents[index].data["message"]);
+                    snapshot.data.documents[index].data["message"],
+                    snapshot.data.documents[index].data["sendBy"] ==
+                        Constants.myName,
+                  );
                 })
             : Center(
                 child: Text(

@@ -54,4 +54,11 @@ class Database {
         .orderBy("time", descending: false)
         .snapshots();
   }
+
+  getChatRooms(String username) {
+    return Firestore.instance
+        .collection("chatroom")
+        .where("users", arrayContains: username)
+        .snapshots();
+  }
 }
