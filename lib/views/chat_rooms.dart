@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/helper/shared_preferences_helper.dart';
+import 'package:flutter_chat/widgets/chatRoomTile.dart';
 
+import '../services/database.dart';
 import 'package:flutter_chat/views/search.dart';
 import '../helper/authenticate.dart';
 import '../helper/constants.dart';
@@ -13,6 +15,34 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   Auth auth = new Auth();
+  Database db = new Database();
+  Stream chatRoomsStream;
+
+  Widget chatRoomsList() {
+    return StreamBuilder(
+      stream: chatRoomsStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return ChatRoomTile(
+                    snapshot.data.documents[index].data["chatRoomId"],
+                    snapshot.data.documents[index].data["chatRoomId"],
+                  );
+                })
+            : Center(
+                child: Text(
+                  "Here will appear your conversations",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+              );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -22,7 +52,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   getUserInfo() async {
     Constants.myName = await SharedPreferencesHelper.getUsername();
-    setState(() {});
+    db.getChatRooms(Constants.myName).then((value) {
+      setState(() {
+        chatRoomsStream = value;
+      });
+    });
   }
 
   @override
@@ -50,6 +84,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
         ],
       ),
+      body: chatRoomsList(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
         onPressed: () {
