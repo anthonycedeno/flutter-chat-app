@@ -56,7 +56,7 @@ class _SearchState extends State<Search> {
   getUserInfo() async {
     _myName = await SharedPreferencesHelper.getUsername();
     setState(() {});
-    print("name: ${_myName}");
+    print("name: $_myName");
   }
 
   @override

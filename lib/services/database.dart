@@ -26,8 +26,32 @@ class Database {
         .collection("chatroom")
         .document(chatRoomId)
         .setData(chatroomMap)
-        .catchError((e) {
-      print(e.toString());
-    });
+        .catchError(
+      (e) {
+        print(e.toString());
+      },
+    );
+  }
+
+  addChatMessage(String chatRoomId, messageMap) {
+    Firestore.instance
+        .collection("chatroom")
+        .document(chatRoomId)
+        .collection("chats")
+        .add(messageMap)
+        .catchError(
+      (e) {
+        print(e.toString());
+      },
+    );
+  }
+
+  getChatMessages(String chatRoomId) async {
+    return await Firestore.instance
+        .collection("chatroom")
+        .document(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: false)
+        .snapshots();
   }
 }
