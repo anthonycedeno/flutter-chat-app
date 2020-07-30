@@ -27,15 +27,14 @@ class _SignInState extends State<SignIn> {
   signMeIn() {
     if (formKey.currentState.validate()) {
       SharedPreferencesHelper.saveEmail(emailController.text);
-
-      setState(() {
-        isLoading = true;
-      });
-
       db.getUserByEmail(emailController.text).then((value) {
         snapshotUserInfo = value;
         SharedPreferencesHelper.saveEmail(
             snapshotUserInfo.documents[0].data["username"]);
+        print("Username: ${snapshotUserInfo.documents[0].data["username"]}");
+      });
+      setState(() {
+        isLoading = true;
       });
 
       auth

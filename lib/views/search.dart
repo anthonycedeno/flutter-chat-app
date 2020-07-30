@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/helper/constants.dart';
 
+import '../helper/constants.dart';
 import '../services/database.dart';
 import '../widgets/searchtilewidget.dart';
 import './chat_screen.dart';
@@ -49,6 +49,8 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
   }
+
+  getUserInfo() {}
 
   @override
   Widget build(BuildContext context) {

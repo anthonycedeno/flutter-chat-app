@@ -33,21 +33,21 @@ class SharedPreferencesHelper {
   //Getting data from Shared Preferences
   static Future<bool> getUserLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getBool(
+    return prefs.getBool(
       sharedPreferencesUserLoggedInKey,
     );
   }
 
   static Future<String> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString(
+    return prefs.getString(
       sharedPreferencesUsernameKey,
     );
   }
 
   static Future<String> getEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString(
+    return prefs.getString(
       sharedPreferencesUserEmailKey,
     );
   }
