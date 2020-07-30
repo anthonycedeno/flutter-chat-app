@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/helper/shared_preferences_helper.dart';
 
 import '../helper/constants.dart';
 import '../services/database.dart';
@@ -10,6 +11,8 @@ class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
+
+String _myName;
 
 class _SearchState extends State<Search> {
   Database db = new Database();
@@ -50,7 +53,11 @@ class _SearchState extends State<Search> {
     super.initState();
   }
 
-  getUserInfo() {}
+  getUserInfo() async {
+    _myName = await SharedPreferencesHelper.getUsername();
+    setState(() {});
+    print("name: ${_myName}");
+  }
 
   @override
   Widget build(BuildContext context) {
