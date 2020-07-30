@@ -27,7 +27,10 @@ class _ChatRoomState extends State<ChatRoom> {
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   return ChatRoomTile(
-                    snapshot.data.documents[index].data["chatRoomId"],
+                    snapshot.data.documents[index].data["chatRoomId"]
+                        .toString()
+                        .replaceAll("_", "")
+                        .replaceAll(Constants.myName.toString(), ""),
                     snapshot.data.documents[index].data["chatRoomId"],
                   );
                 })
@@ -67,6 +70,9 @@ class _ChatRoomState extends State<ChatRoom> {
         actions: [
           GestureDetector(
             onTap: () {
+              // SharedPreferencesHelper.saveLoggedIn(false);
+              // SharedPreferencesHelper.saveEmail("");
+              // SharedPreferencesHelper.saveUsername("");
               auth.signOut();
               Navigator.pushReplacement(
                 context,
