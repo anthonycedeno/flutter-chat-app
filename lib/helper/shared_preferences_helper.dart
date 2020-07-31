@@ -8,7 +8,7 @@ class SharedPreferencesHelper {
   //Saving data to Shared Preferences
   static Future<void> saveLoggedIn(bool isUserLoggedIn) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setBool(
+    prefs.setBool(
       sharedPreferencesUserLoggedInKey,
       isUserLoggedIn,
     );
@@ -16,7 +16,7 @@ class SharedPreferencesHelper {
 
   static Future<void> saveUsername(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(
+    prefs.setString(
       sharedPreferencesUsernameKey,
       username,
     );
@@ -24,7 +24,7 @@ class SharedPreferencesHelper {
 
   static Future<void> saveEmail(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(
+    prefs.setString(
       sharedPreferencesUserEmailKey,
       email,
     );

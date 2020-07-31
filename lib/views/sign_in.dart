@@ -9,8 +9,8 @@ import '../widgets/custombuttonwidget.dart';
 import '../helper/shared_preferences_helper.dart';
 
 class SignIn extends StatefulWidget {
-  final Function toggle;
-  SignIn(this.toggle);
+  //final Function toggle;
+  //SignIn(this.toggle);
   @override
   _SignInState createState() => _SignInState();
 }
@@ -129,7 +129,12 @@ class _SignInState extends State<SignIn> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      widget.toggle();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatRoom(),
+                        ),
+                      );
                     },
                     child: Container(
                       alignment: Alignment.center,

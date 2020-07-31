@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/helper/shared_preferences_helper.dart';
-import 'package:flutter_chat/widgets/chatRoomTile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_chat/helper/shared_preferences_helper.dart';
+import 'package:flutter_chat/views/sign_in.dart';
+import 'package:flutter_chat/widgets/chatRoomTile.dart';
 import '../services/database.dart';
 import 'package:flutter_chat/views/search.dart';
 import '../helper/authenticate.dart';
@@ -17,6 +19,7 @@ class _ChatRoomState extends State<ChatRoom> {
   Auth auth = new Auth();
   Database db = new Database();
   Stream chatRoomsStream;
+  SharedPreferencesHelper prefs = new SharedPreferencesHelper();
 
   Widget chatRoomsList() {
     return StreamBuilder(
@@ -69,15 +72,17 @@ class _ChatRoomState extends State<ChatRoom> {
         title: Text('ChatRoom'),
         actions: [
           GestureDetector(
-            onTap: () {
-              // SharedPreferencesHelper.saveLoggedIn(false);
-              // SharedPreferencesHelper.saveEmail("");
-              // SharedPreferencesHelper.saveUsername("");
+            onTap: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('sharedPreferencesUserLoggedInKey');
+              prefs.remove('sharedPreferencesUsernameKey');
+              prefs.remove('sharedPreferencesUserEmailKey');
               auth.signOut();
+
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Authenticate(),
+                  builder: (context) => SignIn(),
                 ),
               );
             },
